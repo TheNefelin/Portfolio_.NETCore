@@ -12,9 +12,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibrary_DTOs", "ClassL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibrary_Services", "ClassLibrary_Services\ClassLibrary_Services.csproj", "{74D79B25-5838-4EFC-81FA-173CBBEC6DD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{658385EB-B68C-43A4-B4DD-A01DEC33F64E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{658385EB-B68C-43A4-B4DD-A01DEC33F64E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiAppAdmin", "MauiAppAdmin\MauiAppAdmin.csproj", "{999E2DE5-4561-410B-8F3B-FF3791E20FF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiAppAdmin", "MauiAppAdmin\MauiAppAdmin.csproj", "{999E2DE5-4561-410B-8F3B-FF3791E20FF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

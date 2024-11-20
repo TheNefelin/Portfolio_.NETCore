@@ -20,30 +20,28 @@ public partial class CorePage : ContentPage
 
     private async void OnGetAll(object sender, EventArgs e)
 	{
-        var frame = (Frame)sender;
         loading.IsVisible = true;
-        frame.IsEnabled = false;
+        var frame = (Frame)sender;
+        DisableControls();
 
         await ButtonAnimation(frame);
         await OnDownloadData();
 
         loading.IsVisible = false;
-        frame.IsEnabled = true;
+        EnableControls();
     }
 
     private async void OnDecryptData(object sender, EventArgs e)
     {
-        bool status = true;
-
-        var frame = (Frame)sender;
         loading.IsVisible = true;
-        frame.IsEnabled = false;
+        var frame = (Frame)sender;
+        DisableControls();
 
-        status = true;
         if (CoreData.Count == 0)
         {
             await DisplayAlert("Error", "La Lista esta Vacía.", "Ok");
-            status = false;
+            EnableControls();
+            return;
         }
 
         for (int i = 0; i < CoreData.Count; i++)
@@ -51,31 +49,58 @@ public partial class CorePage : ContentPage
             if (!IsBase64String(CoreData[i].Data01))
             {
                 await DisplayAlert("Error", "La Lista ya está Descifrado.", "Ok");
-                status = false;
+                EnableControls();
+                return;
             }
         }
 
-        if (status)
+        var passwordPromp = new CorePromptPage();
+        await Navigation.PushModalAsync(passwordPromp);
+        var password = await passwordPromp.GetPasswordAsync();
+
+        FilteredCoreData.Clear();
+
+        if (string.IsNullOrWhiteSpace(password))
         {
-            var passwordPromp = new CorePromptPage();
-            await Navigation.PushModalAsync(passwordPromp);
-            var password = await passwordPromp.GetPasswordAsync();
-            
-            await DisplayAlert("#", password, "ok");
+            EnableControls();
+            return;
         }
 
-        loading.IsVisible = false;
-        frame.IsEnabled = true;
+        var result = await _apiCoreService.Login(password);
+
+        if (!result.Success)
+        {
+            await DisplayAlert($"{result.StatusCode}", $"{result.Message}", "Ok");
+            EnableControls();
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(result.Data?.IV))
+        {
+            EncryptionService encryptionService = new EncryptionService();
+
+            for (int i = 0; i < CoreData.Count; i++)
+            {
+                CoreData[i] = encryptionService.DecryptData(CoreData[i], password, result.Data.IV);
+            }
+
+            foreach (var coreData in CoreData.OrderBy(e => e.Data01))
+            {
+                FilteredCoreData.Add(coreData);
+            }
+        }
+
+        EnableControls();
     }
 
     private async void OnCreate(object sender, EventArgs e)
 	{
-        var frame = (Frame)sender;
         loading.IsVisible = true;
-        frame.IsEnabled = false;
+        var frame = (Frame)sender;
+        DisableControls();
 
         loading.IsVisible = false;
-        frame.IsEnabled = true;
+        EnableControls();
     }
 
     private async Task OnDownloadData()
@@ -84,11 +109,10 @@ public partial class CorePage : ContentPage
         CoreData.Clear();
 
         var resultApi = await _apiCoreService.GetAll();
-        var sortData = resultApi.Data.OrderBy(dt => dt.Data01).ToList();
 
-        foreach (var data in sortData)
+        foreach (var coreData in resultApi.Data)
         {
-            CoreData.Add(data);
+            CoreData.Add(coreData);
         }
 
         FilteredCoreData = new ObservableCollection<CoreDTO>(CoreData);
@@ -120,7 +144,27 @@ public partial class CorePage : ContentPage
         }
     }
 
-    public bool IsBase64String(string base64String)
+    private void DisableControls()
+    {
+        BtnGetAll.IsEnabled = false;
+        BtnDecrypt.IsEnabled = false;
+        BtnCreate.IsEnabled = false;
+        TxtSearch.IsEnabled = false;
+
+        TxtSearch.Text = "";
+    }
+
+    private void EnableControls()
+    {
+        BtnGetAll.IsEnabled = true;
+        BtnDecrypt.IsEnabled = true;
+        BtnCreate.IsEnabled = true;
+        TxtSearch.IsEnabled = true;
+
+        loading.IsVisible = false;
+    }
+
+    private bool IsBase64String(string base64String)
     {
         if (string.IsNullOrEmpty(base64String))
         {

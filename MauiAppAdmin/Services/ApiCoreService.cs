@@ -16,6 +16,11 @@ namespace MauiAppAdmin.Services
             _httpClient = httpClient;
         }
 
+        public async Task<ResultApiDTO<CoreIVDTO>> Login(string password)
+        {
+            return await RequestApiQuery<CoreIVDTO>($"/api/core/login", null, password);
+        }
+
         public async Task<ResultApiDTO<List<CoreDTO>>> GetAll()
         {
             return await RequestApiQuery<List<CoreDTO>>($"/api/core/get-all", null, "");
