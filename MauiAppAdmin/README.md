@@ -7,6 +7,7 @@
 ## Dependencies
 ```
 ClassLibrary_DTOs
+CommunityToolkit.Maui
 Newtonsoft.Json
 Plugin.Maui.Biometric
 ```
@@ -132,7 +133,7 @@ public LoginPage(ApiAuthService authService)
 ## XAML
 > [Maui Doc](https://learn.microsoft.com/es-es/dotnet/maui/whats-new/dotnet-8?view=net-maui-8.0)
 
-* Single container
+### Single container
 ```
 <Button />
 <Label />
@@ -141,7 +142,8 @@ public LoginPage(ApiAuthService authService)
 <Frame />
 <ScrollView />
 ```
-* Multiple container
+
+### Multiple container
 ```
 <ScrollView />
 <StackLayout />
@@ -163,3 +165,15 @@ public LoginPage(ApiAuthService authService)
 </CollectionView>
 ```
 
+### CommunityToolkit.Maui
+* Add servive on Build
+```
+builder
+    .UseMauiApp<App>()
+    .UseMauiCommunityToolkit()
+    ...
+```
+* On xaml file
+```
+xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+```

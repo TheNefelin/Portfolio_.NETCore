@@ -1,4 +1,5 @@
-﻿using MauiAppAdmin.Pages;
+﻿using CommunityToolkit.Maui;
+using MauiAppAdmin.Pages;
 using MauiAppAdmin.Services;
 using Microsoft.Extensions.Logging;
 using Plugin.Maui.Biometric;
@@ -12,6 +13,7 @@ namespace MauiAppAdmin
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -22,8 +24,10 @@ namespace MauiAppAdmin
             builder.Services.AddSingleton<IBiometric>(BiometricAuthenticationService.Default);
             builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri("https://artema.bsite.net/") });
             builder.Services.AddSingleton<ApiAuthService>();
+            builder.Services.AddSingleton<ApiCoreService>();
 
             builder.Services.AddTransient<LoginPage>();
+            builder.Services.AddTransient<CorePage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

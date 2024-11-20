@@ -14,20 +14,17 @@
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
-            <Frame x:Name="DynamicFrame" Grid.Row="0" BackgroundColor="{StaticResource TestColor04}" Margin="20" MaximumWidthRequest="400" MaximumHeightRequest="320">
+            <Frame x:Name="DynamicFrame" Grid.Row="0" BackgroundColor="{StaticResource BackgroundColor80}" Margin="20" MaximumWidthRequest="400" MaximumHeightRequest="320">
                 <StackLayout>
                     <Label Text="Iniciar Sesión" HorizontalOptions="Center" FontAttributes="Bold" FontSize="20"/>
                     <Entry x:Name="UserEntry" Placeholder="Usuario" />
                     <Entry x:Name="PasswordEntry" Placeholder="Contraseña" IsPassword="True" />
-                    <Button Clicked="OnLoginButtonClicked" Text="Iniciar Sesións" Margin="0,15" TextColor="{StaticResource TestColor08}" BackgroundColor="{StaticResource TestColor07}" />
-                    <Button Text="Registrarse" TextColor="{StaticResource White}" BackgroundColor="{StaticResource TestColor07}" />
+                    <Button Clicked="OnLoginButtonClicked" Text="Iniciar Sesións" Margin="0,15" />
+                    <Button Text="Registrarse" />
                 </StackLayout>
             </Frame>
 
-            <Button Clicked="OnAuthClicked" Grid.Row="1" ImageSource="icon_alien_512.png" HeightRequest="150" WidthRequest="150" CornerRadius="75" Background="{StaticResource Black}" BorderColor="white" BorderWidth="2" />
-            <!--<Frame Grid.Row="1" HeightRequest="150" WidthRequest="150" CornerRadius="75" BorderColor="{StaticResource TestColor01}">
-                <Image Source="icon_alien_512.png" />
-            </Frame>-->
+            <Button Clicked="OnAuthClicked" Grid.Row="1" ImageSource="icon_alien_512.png" HeightRequest="150" WidthRequest="150" CornerRadius="75" Background="{StaticResource BackgroundColor80}" BorderColor="white" BorderWidth="2" />
         </Grid>
     </Grid>
     

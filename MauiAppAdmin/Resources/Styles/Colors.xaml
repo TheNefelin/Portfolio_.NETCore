@@ -9,11 +9,11 @@
     <Color x:Key="TestColor01">#FF990A</Color>
     <Color x:Key="TestColor02">#FCA120</Color>
     <Color x:Key="TestColor03">#BE001D</Color>
-    <Color x:Key="TestColor04">#CC000000</Color>
     <Color x:Key="TestColor05">#0A6FFF</Color>
     <Color x:Key="TestColor06">#FFD43B</Color>
-    <Color x:Key="TestColor07">#4F4F4F</Color>
-    <Color x:Key="TestColor08">#F2F2F2</Color>
+    <Color x:Key="ButtonTextColor">#F2F2F2</Color>
+    <Color x:Key="ButtonBackgroundColor">#4F4F4F</Color>
+    <Color x:Key="BackgroundColor80">#CC000000</Color>
 
     <Color x:Key="Primary">#512BD4</Color>
     <Color x:Key="PrimaryDark">#ac99ea</Color>

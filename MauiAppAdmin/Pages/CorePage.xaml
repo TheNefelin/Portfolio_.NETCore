@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="MauiAppAdmin.Pages.CorePage"
              Title="CorePage">
 
@@ -14,8 +15,8 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <ScrollView Grid.Row="0" Orientation="Horizontal" Margin="10">
-                <StackLayout Orientation="Horizontal" Spacing="10">
+            <ScrollView Grid.Row="0" Orientation="Horizontal" >
+                <StackLayout Orientation="Horizontal" Spacing="10" Margin="10">
                     <Frame Padding="0" WidthRequest="80" HeightRequest="80">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnGetAll"/>
@@ -69,21 +70,47 @@
             </ScrollView>
 
             <Frame Grid.Row="1" Margin="10,0" >
-                <Entry Placeholder="Buscar.." />
+                <Entry x:Name="TryTXT" TextChanged="OnSearchTextChanged" Placeholder="Buscar.." />
             </Frame>
 
-            <Frame Grid.Row="2" Margin="10" BackgroundColor="{StaticResource TestColor04}">
-                <StackLayout>
-                    <Label Text="Lista de Secretos" FontSize="20" FontAttributes="Bold" Margin="0,0,0,10"/>
-                    <ActivityIndicator x:Name="loading" IsRunning="True" IsVisible="False"/>
+            <Frame Grid.Row="2" Margin="10" BackgroundColor="{StaticResource BackgroundColor80}" >
+                <ScrollView Orientation="Vertical">
 
-                    <ScrollView>
-                        <StackLayout>
+                    <StackLayout>
+                        <Label Text="Lista de Secretos" FontSize="20" FontAttributes="Bold" Margin="0,0,0,10"/>
+                        <ActivityIndicator x:Name="loading" IsRunning="True" IsVisible="False"/>
 
-                            
-                        </StackLayout>
-                    </ScrollView>
-                </StackLayout>
+                        <CollectionView x:Name="SecretsCollectionView" ItemsSource="{Binding CoreData}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+
+                                    <toolkit:Expander Margin="0,0,0,5">
+                                        <toolkit:Expander.Header>
+                                            <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10">
+                                                <Label Text="{Binding Data01}" FontSize="18" FontAttributes="Bold" />
+                                            </Frame>
+                                        </toolkit:Expander.Header>
+                                        <toolkit:Expander.Content>
+                                            <StackLayout Padding="10">
+                                                <Label Text="Usuario:" FontAttributes="Bold" />
+                                                <Label Text="{Binding Data02}" />
+                                                <Label Text="Contraseña:" FontAttributes="Bold" Margin="0,5,0,0" />
+                                                <Label Text="{Binding Data03}" Margin="0,0,0,10" />
+
+                                                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                                                    <Button Text="Editar" HeightRequest="50" ImageSource="edit_512.png" />
+                                                    <Button Text="Eliminar" HeightRequest="50" ImageSource="delete_512.png" />
+                                                </HorizontalStackLayout>
+                                            </StackLayout>
+                                        </toolkit:Expander.Content>
+                                    </toolkit:Expander>
+
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+
+                </ScrollView>
             </Frame>
         </Grid>
     </Grid>

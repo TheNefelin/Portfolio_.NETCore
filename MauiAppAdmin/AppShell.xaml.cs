@@ -12,8 +12,13 @@ namespace MauiAppAdmin
 
         private async void OnLogoutClicked(object sender, EventArgs e)
         {
+            await PerformLogout();
+        }
+
+        public async Task PerformLogout()
+        {
             App.Current.MainPage = new LoadingPage();
-                      
+
             ApiAuthService.RemoveUser();
 
             var toolbarItem = this.ToolbarItems.FirstOrDefault(item => item.Text == "Logout");
