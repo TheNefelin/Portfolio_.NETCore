@@ -1,4 +1,6 @@
-﻿namespace MauiAppAdmin
+﻿using MauiAppAdmin.Pages;
+
+namespace MauiAppAdmin
 {
     public partial class App : Application
     {
@@ -6,7 +8,8 @@
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            App.Current.UserAppTheme = AppTheme.Dark;
+            MainPage = new LoginPage();
         }
     }
 }
