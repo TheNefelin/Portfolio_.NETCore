@@ -4,12 +4,17 @@ namespace MauiAppAdmin
 {
     public partial class App : Application
     {
-        public App()
+        public static IServiceProvider _serviceProvider;
+
+        public App(IServiceProvider serviceProvider)
         {
             InitializeComponent();
 
+            _serviceProvider = serviceProvider;
             App.Current.UserAppTheme = AppTheme.Dark;
-            MainPage = new LoginPage();
+
+            var loginPage = App._serviceProvider.GetService<LoginPage>();
+            MainPage = loginPage;
         }
     }
 }

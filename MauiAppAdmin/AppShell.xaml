@@ -6,16 +6,27 @@
     xmlns:local="clr-namespace:MauiAppAdmin.Pages"
     Shell.FlyoutBehavior="Disabled"
     Title="MauiAppAdmin">
-
-
-    <ShellContent
-        Title="Login"
-        ContentTemplate="{DataTemplate local:LoginPage}"
-        Route="LoginPage" />
     
-    <ShellContent
-        Title="Loading"
-        ContentTemplate="{DataTemplate local:LoadingPage}"
-        Route="LoadingPage" />
+    <Shell.ToolbarItems>
+        <ToolbarItem x:Name="Logout" Text="Logout" Clicked="OnLogoutClicked" />
+    </Shell.ToolbarItems>
+    
+    <TabBar>
+        <Tab Title="Secreto" Icon="icon__shield_512.png">
+            <ShellContent ContentTemplate="{DataTemplate local:CorePage}" />
+        </Tab>
+        <Tab Title="Inicio" Icon="icon_dragon_512.png">
+            <ShellContent ContentTemplate="{DataTemplate local:TestPage}" />
+        </Tab>
+        <Tab Title="Chat" Icon="icon_chat_512.png">
+            <ShellContent ContentTemplate="{DataTemplate local:TestPage}" />
+        </Tab>
+        <Tab Title="Maestro" Icon="icon_skull_512.png">
+            <ShellContent ContentTemplate="{DataTemplate local:TestPage}" />
+        </Tab>
+        <Tab Title="Perfil" Icon="icon_config_512.png">
+            <ShellContent ContentTemplate="{DataTemplate local:TestPage}" />
+        </Tab>
+    </TabBar>
     
 </Shell>

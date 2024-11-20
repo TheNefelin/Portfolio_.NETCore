@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using MauiAppAdmin.Pages;
+using MauiAppAdmin.Services;
+using Microsoft.Extensions.Logging;
 using Plugin.Maui.Biometric;
 
 namespace MauiAppAdmin
@@ -18,9 +20,13 @@ namespace MauiAppAdmin
 
             // Dependencies Injection
             builder.Services.AddSingleton<IBiometric>(BiometricAuthenticationService.Default);
+            builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri("https://artema.bsite.net/") });
+            builder.Services.AddSingleton<ApiAuthService>();
+
+            builder.Services.AddTransient<LoginPage>();
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

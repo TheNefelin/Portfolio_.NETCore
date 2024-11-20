@@ -6,6 +6,8 @@
 
 ## Dependencies
 ```
+ClassLibrary_DTOs
+Newtonsoft.Json
 Plugin.Maui.Biometric
 ```
 
@@ -40,9 +42,12 @@ public override bool FinishedLaunching(UIApplication app, NSDictionary options)
 ```
 
 ### Change welcome screen logo and background color
-* Modify icon logo on welcome screen
+* Modify icon logo on welcome screen MauiAppAdmin
 ```
 .\Resources\Splash\splash.svg (Photopea)
+
+<!-- Splash Screen -->
+<MauiSplashScreen Include="Resources\Splash\thundercats.png" Color="#000000" />
 ```
 * Modify icon app
 ```
@@ -92,3 +97,69 @@ if (result.Status == BiometricResponseStatus.Success)
 else
     await DisplayAlert("Error", result.ErrorMsg, "Ok");
 ```
+
+## HttpClient
+* Add dependency injection in MauiProgram.cs
+```
+builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7005/") });
+```
+* Add LoginPage as dependency injection in MauiProgram.cs
+```
+builder.Services.AddTransient<LoginPage>();
+```
+* If LoginPage is loaded on (App.xaml.cs), add Service Provider
+```
+public static IServiceProvider _serviceProvider;
+
+public App(IServiceProvider serviceProvider)
+{
+    InitializeComponent();
+    _serviceProvider = serviceProvider;
+    MainPage = new NavigationPage(_serviceProvider.GetService<LoginPage>());
+}
+```
+* Implementation
+```
+private readonly ApiAuthService _authService;
+
+public LoginPage(ApiAuthService authService)
+{
+	InitializeComponent();
+    _authService = authService;
+}
+```
+
+## XAML
+> [Maui Doc](https://learn.microsoft.com/es-es/dotnet/maui/whats-new/dotnet-8?view=net-maui-8.0)
+
+* Single container
+```
+<Button />
+<Label />
+<Image />
+<ContentPage />
+<Frame />
+<ScrollView />
+```
+* Multiple container
+```
+<ScrollView />
+<StackLayout />
+<FlexLayout />
+<AbsoluteLayout />
+<VerticalStackLayout />
+<HorizontalStackLayout />
+
+<CollectionView ItemsSource="{Binding Products}">
+    <CollectionView.ItemsLayout>
+        <GridItemsLayout Orientation="Vertical" />
+    </CollectionView.ItemsLayout>
+
+    <CollectionView.ItemTemplate>
+        <DataTemplate>
+            <!-- Aqui van lo Elementos a iterar de Products -->
+        </DataTemplate>
+    </CollectionView.ItemTemplate>
+</CollectionView>
+```
+

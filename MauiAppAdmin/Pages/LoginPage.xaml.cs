@@ -1,42 +1,45 @@
+using ClassLibrary_DTOs.Auth;
+using ClassLibrary_DTOs;
+using MauiAppAdmin.Services;
 using Plugin.Maui.Biometric;
 
 namespace MauiAppAdmin.Pages;
 
 public partial class LoginPage : ContentPage
 {
-	public LoginPage()
+    private readonly ApiAuthService _authService;
+
+    public LoginPage(ApiAuthService authService)
 	{
 		InitializeComponent();
-	}
+        _authService = authService;
+    }
 
     private async void OnLoginButtonClicked(object sender, EventArgs e)
     {
+        await Navigation.PushModalAsync(new LoadingPage());
+
         string user = UserEntry.Text;
         string password = PasswordEntry.Text;
 
         if (string.IsNullOrEmpty(user) || string.IsNullOrEmpty(password))
         {
             await DisplayAlert("Error", "Por favor ingresa un correo y contraseña", "OK");
+            await Navigation.PopModalAsync();
             return;
         }
 
-        //App.Current.MainPage = new LoadingPage();
-        //await Navigation.PushModalAsync(new LoadingPage());
+        ResultApiDTO<LoggedinDTO> resultApi = await _authService.Login(UserEntry.Text, PasswordEntry.Text);
 
-        //// Lógica para autenticación aquí (ejemplo: llamada a un servicio de API)
-        //ResponseApiDTO<LoggedinDTO> responseApi = await _authService.Login(UsernameEntry.Text, PasswordEntry.Text);
+        if (!resultApi.Success) 
+        {
+            await DisplayAlert($"Error {resultApi.StatusCode}", resultApi.Message, "OK");
+            await Navigation.PopModalAsync();
+            return;
+        }
 
-        //await Navigation.PopModalAsync();
-
-        //if (responseApi != null)
-        //{
-        //    // Cambiar la página principal a AppShell después de la autenticación exitosa
-        //    Application.Current.MainPage = new AppShell();
-        //}
-        //else
-        //{
-        //    await DisplayAlert("Error", "Usuario o contraseña incorrectos", "OK");
-        //}
+        Application.Current.MainPage = new AppShell();
+        await Navigation.PopModalAsync();
     }
 
     private async void OnAuthClicked(object sender, EventArgs e)
@@ -51,14 +54,13 @@ public partial class LoginPage : ContentPage
             );
 
         if (result.Status == BiometricResponseStatus.Success)
-            await DisplayAlert("Naizu", "Usuario Recuperado", "Ok");
+            UserEntry.Text = await ApiAuthService.GetUser();
         else
             await DisplayAlert("Error", result.ErrorMsg, "Ok");
     }
 
     private void OnSizeChanged(object sender, EventArgs e)
     {
-        // Obtener ancho y alto de la página
         var width = this.Width;
         var height = this.Height;
 
@@ -69,7 +71,7 @@ public partial class LoginPage : ContentPage
         }
         else // Vertical
         {
-            DynamicFrame.Margin = new Thickness(30, 50);
+            DynamicFrame.Margin = new Thickness(30, 80);
             DynamicFrame.VerticalOptions = LayoutOptions.Start;
         }
     }

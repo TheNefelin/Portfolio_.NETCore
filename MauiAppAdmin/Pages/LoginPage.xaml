@@ -8,15 +8,27 @@
     <Grid>
         <Image Source="background.webp" Aspect="AspectFill"/>
 
-        <Frame x:Name="DynamicFrame" BackgroundColor="{StaticResource TestColor04}" Margin="30,20" MaximumWidthRequest="400" MaximumHeightRequest="320">
-            <StackLayout>
-                <Label Text="Iniciar Sesión" HorizontalOptions="Center" FontAttributes="Bold" FontSize="20"/>
-                <Entry x:Name="UserEntry" Placeholder="Usuario"></Entry>
-                <Entry x:Name="PasswordEntry" Placeholder="Contraseña" IsPassword="True"></Entry>
-                <Button Clicked="OnLoginButtonClicked" Text="Iniciar Sesións" Margin="0,15" TextColor="{StaticResource TestColor08}" BackgroundColor="{StaticResource TestColor07}" />
-                <Button Clicked="OnAuthClicked" Text="Recuperar Usuario con Huella" TextColor="{StaticResource White}" BackgroundColor="{StaticResource TestColor07}" />
-            </StackLayout>
-        </Frame>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <Frame x:Name="DynamicFrame" Grid.Row="0" BackgroundColor="{StaticResource TestColor04}" Margin="20" MaximumWidthRequest="400" MaximumHeightRequest="320">
+                <StackLayout>
+                    <Label Text="Iniciar Sesión" HorizontalOptions="Center" FontAttributes="Bold" FontSize="20"/>
+                    <Entry x:Name="UserEntry" Placeholder="Usuario" />
+                    <Entry x:Name="PasswordEntry" Placeholder="Contraseña" IsPassword="True" />
+                    <Button Clicked="OnLoginButtonClicked" Text="Iniciar Sesións" Margin="0,15" TextColor="{StaticResource TestColor08}" BackgroundColor="{StaticResource TestColor07}" />
+                    <Button Text="Registrarse" TextColor="{StaticResource White}" BackgroundColor="{StaticResource TestColor07}" />
+                </StackLayout>
+            </Frame>
+
+            <Button Clicked="OnAuthClicked" Grid.Row="1" ImageSource="icon_alien_512.png" HeightRequest="150" WidthRequest="150" CornerRadius="75" Background="{StaticResource Black}" BorderColor="white" BorderWidth="2" />
+            <!--<Frame Grid.Row="1" HeightRequest="150" WidthRequest="150" CornerRadius="75" BorderColor="{StaticResource TestColor01}">
+                <Image Source="icon_alien_512.png" />
+            </Frame>-->
+        </Grid>
     </Grid>
     
 </ContentPage>
