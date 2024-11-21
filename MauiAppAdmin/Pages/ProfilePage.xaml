@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiAppAdmin.Pages.TestPage"
-             Title="TestPage">
+             x:Class="MauiAppAdmin.Pages.ProfilePage"
+             Title="ProfilePage">
 
     <StackLayout>
-        <Button Text="CLICK" Clicked="OnClick"/>
-        <Label x:Name="Txt1"/>
-        <Label x:Name="Txt2"/>
+        <Entry x:Name="TxtProp" Placeholder="Texto"/>
+        <Button x:Name="BtnProp" Clicked="OnClick" Text="CLICK"/>
     </StackLayout>
 
 </ContentPage>

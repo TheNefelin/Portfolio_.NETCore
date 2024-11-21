@@ -2,11 +2,43 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiAppAdmin.Pages.CoreFormPage"
-             Title="CoreFormPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Gestor de Contraseñas">
+
+    <Grid>
+        <Image Source="background.webp" Aspect="AspectFill"/>
+
+        <StackLayout Padding="10" Spacing="10">
+            <Frame x:Name="ErrorFrame" IsVisible="False" HasShadow="True" HorizontalOptions="Fill">
+                <StackLayout HorizontalOptions="Center">
+                    <Label x:Name="ErrorLabel" TextColor="Red" FontSize="Small" />
+                </StackLayout>
+            </Frame>
+
+            <Frame BackgroundColor="{StaticResource BackgroundColor80}">
+                <StackLayout>
+                    <Label Text="Nuevo Secreto" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Padding="10,5" />
+
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="End">
+                        <Label Text="Id:"/>
+                        <Label x:Name="IdEntry" />
+                    </HorizontalStackLayout>
+   
+                    <Label Text="Servicio:"/>
+                    <Entry x:Name="Data01Entry" Placeholder="Ingresa el servicio"/>
+
+                    <Label Text="Usuario:"/>
+                    <Entry x:Name="Data02Entry" Placeholder="Ingresa el usuario"/>
+
+                    <Label Text="Contraseña:"/>
+                    <Entry x:Name="Data03Entry" IsPassword="True" Placeholder="Ingresa la contraseña"/>
+                    
+                    <Label Text="Contraseña de Encriptación:"/>
+                    <Entry x:Name="PasswordEntry" IsPassword="True" Placeholder="Ingresa la contraseña"/>
+                    
+                    <Button x:Name="BtnClick" Clicked="OnSave" Margin="0,30,0,0"/>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </Grid>
+
 </ContentPage>

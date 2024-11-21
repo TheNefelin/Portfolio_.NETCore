@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="MauiAppAdmin.Pages.CorePage"
-             Title="CorePage">
+             Title="Gestor de Contraseñas">
 
     <Grid>
         <Image Source="background.webp" Aspect="AspectFill"/>
@@ -16,7 +16,7 @@
             </Grid.RowDefinitions>
 
             <ScrollView Grid.Row="0" Orientation="Horizontal" >
-                <StackLayout Orientation="Horizontal" Spacing="10" Margin="10">
+                <StackLayout Orientation="Horizontal" Spacing="10" Margin="10,5">
                     <Frame x:Name="BtnGetAll" Padding="0" WidthRequest="80" HeightRequest="80">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnGetAll"/>
@@ -42,30 +42,21 @@
                             <TapGestureRecognizer Tapped="OnCreate"/>
                         </Frame.GestureRecognizers>
                         <StackLayout VerticalOptions="CenterAndExpand">
+                            <Image Source="eye_lock_open_512.png" WidthRequest="36" HorizontalOptions="Center" Aspect="AspectFit"/>
+                            <Label Text="Nuevo" HorizontalTextAlignment="Center" FontSize="Micro"/>
+                        </StackLayout>
+                    </Frame>
+
+                    <Frame x:Name="BtnPassword" Padding="0" WidthRequest="80" HeightRequest="80">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer />
+                        </Frame.GestureRecognizers>
+                        <StackLayout VerticalOptions="CenterAndExpand">
                             <Image Source="icon_key_512.png" WidthRequest="36" HorizontalOptions="Center" Aspect="AspectFit"/>
-                            <Label Text="Nuevo" HorizontalTextAlignment="Center" FontSize="Micro"/>
+                            <Label Text="Contraseña" HorizontalTextAlignment="Center" FontSize="Micro"/>
                         </StackLayout>
                     </Frame>
 
-                    <Frame Padding="0" WidthRequest="80" HeightRequest="80">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer />
-                        </Frame.GestureRecognizers>
-                        <StackLayout VerticalOptions="CenterAndExpand">
-                            <Image Source="icon_mask_512.png" WidthRequest="36" HorizontalOptions="Center" Aspect="AspectFit"/>
-                            <Label Text="Nuevo" HorizontalTextAlignment="Center" FontSize="Micro"/>
-                        </StackLayout>
-                    </Frame>
-
-                    <Frame Padding="0" WidthRequest="80" HeightRequest="80">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer />
-                        </Frame.GestureRecognizers>
-                        <StackLayout VerticalOptions="CenterAndExpand">
-                            <Image Source="icon_mask_512.png" WidthRequest="36" HorizontalOptions="Center" Aspect="AspectFit"/>
-                            <Label Text="Nuevo" HorizontalTextAlignment="Center" FontSize="Micro"/>
-                        </StackLayout>
-                    </Frame>
                 </StackLayout>
             </ScrollView>
 
@@ -73,7 +64,7 @@
                 <Entry x:Name="TxtSearch" TextChanged="OnSearchTextChanged" Placeholder="Buscar.." />
             </Frame>
 
-            <Frame Grid.Row="2" Margin="10" BackgroundColor="{StaticResource BackgroundColor80}" >
+            <Frame Grid.Row="2" Margin="10,5" BackgroundColor="{StaticResource BackgroundColor80}" >
                 <ScrollView Orientation="Vertical">
 
                     <StackLayout>
@@ -91,13 +82,25 @@
                                             </Frame>
                                         </toolkit:Expander.Header>
                                         <toolkit:Expander.Content>
-                                            <StackLayout Padding="10">
-                                                <Label Text="Usuario:" FontAttributes="Bold" />
-                                                <Label Text="{Binding Data02}" />
-                                                <Label Text="Contraseña:" FontAttributes="Bold" Margin="0,5,0,0" />
-                                                <Label Text="{Binding Data03}" Margin="0,0,0,10" />
+                                            <StackLayout Padding="5">
+                                                <Grid ColumnSpacing="15" RowSpacing="5" Margin="0,15">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto"/>
+                                                        <RowDefinition Height="auto"/>
+                                                    </Grid.RowDefinitions>
 
-                                                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                                                    <Label Grid.Column="0" Grid.Row="0" Text="Usuario:" FontAttributes="Bold" />
+                                                    <Label Grid.Column="1" Grid.Row="0" Text="{Binding Data02}" />
+
+                                                    <Label Grid.Column="0" Grid.Row="1" Text="Contraseña:" FontAttributes="Bold" />
+                                                    <Label Grid.Column="1" Grid.Row="1" Text="{Binding Data03}" />
+                                                </Grid>
+
+                                                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10" Margin="5">
                                                     <Button Text="Editar" HeightRequest="50" ImageSource="edit_512.png" />
                                                     <Button Text="Eliminar" HeightRequest="50" ImageSource="delete_512.png" />
                                                 </HorizontalStackLayout>

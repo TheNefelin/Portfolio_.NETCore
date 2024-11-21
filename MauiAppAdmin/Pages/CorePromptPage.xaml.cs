@@ -36,4 +36,14 @@ public partial class CorePromptPage : ContentPage
     {
         return _taskCompletionSource.Task;
     }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        if (!_taskCompletionSource.Task.IsCompleted)
+        {
+            _taskCompletionSource.SetResult(null);
+        }
+    }
 }

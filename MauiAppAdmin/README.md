@@ -177,3 +177,41 @@ builder
 ```
 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
 ```
+
+# Modal with Data
+* **Create a `ContentPage`**  
+* **Define a `TaskCompletionSource` attribute**  
+```
+private TaskCompletionSource<string> _taskCompletionSource;
+```
+* Initialize the attribute in the constructor
+```
+public ConstructorName()
+{
+    InitializeComponent();
+    _taskCompletionSource = new TaskCompletionSource<string>();
+}
+```
+* Set the result value
+```
+_taskCompletionSource.SetResult("SomeValue");
+```
+* Create a method to return the result
+```
+public Task<string> GetPasswordAsync()
+{
+    return _taskCompletionSource.Task;
+}
+```
+* If its there no result? then...
+```
+protected override void OnDisappearing()
+{
+    base.OnDisappearing();
+
+    if (!_tcsCoreDTO.Task.IsCompleted)
+    {
+        _tcsCoreDTO.SetResult(null);
+    }
+}
+```

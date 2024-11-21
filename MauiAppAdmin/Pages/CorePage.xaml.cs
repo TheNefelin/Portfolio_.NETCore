@@ -8,7 +8,7 @@ public partial class CorePage : ContentPage
 {
     private readonly ApiCoreService _apiCoreService;
     public ObservableCollection<CoreDTO> CoreData { get; set; } = new();
-    private ObservableCollection<CoreDTO> FilteredCoreData { get; set; }
+    private ObservableCollection<CoreDTO> FilteredCoreData { get; set; } = new();
 
     public CorePage(ApiCoreService apiCoreService)
 	{
@@ -22,9 +22,8 @@ public partial class CorePage : ContentPage
 	{
         loading.IsVisible = true;
         var frame = (Frame)sender;
-        DisableControls();
+        await DisableControls(frame);
 
-        await ButtonAnimation(frame);
         await OnDownloadData();
 
         loading.IsVisible = false;
@@ -33,9 +32,8 @@ public partial class CorePage : ContentPage
 
     private async void OnDecryptData(object sender, EventArgs e)
     {
-        loading.IsVisible = true;
         var frame = (Frame)sender;
-        DisableControls();
+        await DisableControls(frame);
 
         if (CoreData.Count == 0)
         {
@@ -58,13 +56,14 @@ public partial class CorePage : ContentPage
         await Navigation.PushModalAsync(passwordPromp);
         var password = await passwordPromp.GetPasswordAsync();
 
-        FilteredCoreData.Clear();
-
         if (string.IsNullOrWhiteSpace(password))
         {
             EnableControls();
             return;
         }
+
+        loading.IsVisible = true;
+        FilteredCoreData.Clear();
 
         var result = await _apiCoreService.Login(password);
 
@@ -95,11 +94,20 @@ public partial class CorePage : ContentPage
 
     private async void OnCreate(object sender, EventArgs e)
 	{
-        loading.IsVisible = true;
         var frame = (Frame)sender;
-        DisableControls();
+        await DisableControls(frame);
 
-        loading.IsVisible = false;
+        var page = new CoreFormPage(null);
+        await Navigation.PushAsync(page);
+        var (coreDTO, password) = await page.GetCompletionTask();
+
+        loading.IsVisible = true;
+
+        if (coreDTO != null && !string.IsNullOrWhiteSpace(password))
+        {
+            await OnDownloadData();
+        }
+
         EnableControls();
     }
 
@@ -107,15 +115,15 @@ public partial class CorePage : ContentPage
     {
         SecretsCollectionView.ItemsSource = null;
         CoreData.Clear();
+        FilteredCoreData.Clear();
 
         var resultApi = await _apiCoreService.GetAll();
 
         foreach (var coreData in resultApi.Data)
         {
             CoreData.Add(coreData);
+            FilteredCoreData.Add(coreData);
         }
-
-        FilteredCoreData = new ObservableCollection<CoreDTO>(CoreData);
 
         SecretsCollectionView.ItemsSource = FilteredCoreData;
     }
@@ -144,14 +152,15 @@ public partial class CorePage : ContentPage
         }
     }
 
-    private void DisableControls()
+    private async Task DisableControls(Frame frame)
     {
         BtnGetAll.IsEnabled = false;
         BtnDecrypt.IsEnabled = false;
         BtnCreate.IsEnabled = false;
         TxtSearch.IsEnabled = false;
 
-        TxtSearch.Text = "";
+        await frame.ScaleTo(0.90, 100);
+        await frame.ScaleTo(1, 100);
     }
 
     private void EnableControls()
@@ -173,11 +182,5 @@ public partial class CorePage : ContentPage
 
         Span<byte> buffer = new Span<byte>(new byte[base64String.Length]);
         return Convert.TryFromBase64String(base64String, buffer, out _);
-    }
-
-    private async Task ButtonAnimation(Frame frame)
-    {
-        await frame.ScaleTo(0.90, 100);
-        await frame.ScaleTo(1, 100);
     }
 }

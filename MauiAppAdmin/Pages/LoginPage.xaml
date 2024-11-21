@@ -24,7 +24,7 @@
                 </StackLayout>
             </Frame>
 
-            <Button Clicked="OnAuthClicked" Grid.Row="1" ImageSource="icon_alien_512.png" HeightRequest="150" WidthRequest="150" CornerRadius="75" Background="{StaticResource BackgroundColor80}" BorderColor="white" BorderWidth="2" />
+            <Button Clicked="OnAuthClicked" Grid.Row="1" ImageSource="icon_alien_512.png" HeightRequest="100" WidthRequest="100" CornerRadius="50" Background="{StaticResource BackgroundColor80}" BorderColor="white" BorderWidth="2" />
         </Grid>
     </Grid>
     
