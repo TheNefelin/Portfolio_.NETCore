@@ -26,14 +26,13 @@ public partial class CoreFormPage : ContentPage
             Data02Entry.Text = _coreDTO.Data02;
             Data03Entry.Text = _coreDTO.Data03;
             BtnClick.Text = "Modificar";
-
-            ErrorLabel.Text = "Procura que los datos a modificar están Desencriptado.";
-            ErrorFrame.IsVisible = true;
+            Title.Text = "Modificar Secreto";
         }
         else
         {
             IdEntry.Text = "0";
             BtnClick.Text = "Guardar";
+            Title.Text = "Nuevo Secreto";
         }
     }
 

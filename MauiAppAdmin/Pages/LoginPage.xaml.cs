@@ -17,6 +17,8 @@ public partial class LoginPage : ContentPage
 
     private async void OnLoginButtonClicked(object sender, EventArgs e)
     {
+        MainContainer.Focus();
+        
         await Navigation.PushModalAsync(new LoadingPage());
 
         string user = UserEntry.Text;

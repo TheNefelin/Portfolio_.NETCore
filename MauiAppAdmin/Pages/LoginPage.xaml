@@ -5,7 +5,7 @@
              SizeChanged="OnSizeChanged"
              Title="LoginPage">
 
-    <Grid>
+    <Grid x:Name="MainContainer">
         <Image Source="background.webp" Aspect="AspectFill"/>
 
         <Grid>

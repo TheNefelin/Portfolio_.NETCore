@@ -26,6 +26,24 @@ namespace MauiAppAdmin.Services
             return await RequestApiQuery<List<CoreDTO>>($"/api/core/get-all", null, "");
         }
 
+        public async Task<ResultApiDTO<CoreDTO>> Create(CoreDTO coreDTO)
+        {
+            coreDTO.Id = 0;
+            return await RequestApiQuery<CoreDTO>($"/api/core/insert", coreDTO, "");
+        }
+
+        public async Task<ResultApiDTO<CoreDTO>> Edit(CoreDTO coreDTO)
+        {
+            return await RequestApiQuery<CoreDTO>($"/api/core/update", coreDTO, "");
+        }
+
+        public async Task<ResultApiDTO<CoreDTO>> Delete(int id)
+        {
+            CoreDTO coreDTO = new() { Id = id, Data01 = "na", Data02 = "na", Data03 = "na", };
+
+            return await RequestApiQuery<CoreDTO>($"/api/core/delete", coreDTO, "");
+        }
+
         private async Task<ResultApiDTO<T>> RequestApiQuery<T>(string uri, CoreDTO coreDTO, string password)
         {
             try

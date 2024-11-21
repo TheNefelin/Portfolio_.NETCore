@@ -1,3 +1,4 @@
+using ClassLibrary_DTOs;
 using ClassLibrary_DTOs.PasswordManager;
 using MauiAppAdmin.Services;
 using System.Collections.ObjectModel;
@@ -16,29 +17,35 @@ public partial class CorePage : ContentPage
 
         BindingContext = this;
         _apiCoreService = apiCoreService;
+        CoreCollectionView.ItemsSource = FilteredCoreData;
     }
 
     private async void OnGetAll(object sender, EventArgs e)
 	{
-        loading.IsVisible = true;
+        this.IsEnabled = false;
+
         var frame = (Frame)sender;
-        await DisableControls(frame);
+        await ButtonAnimation(frame);
+        
+        loading.IsVisible = true;
 
-        await OnDownloadData();
+        await DownloadData();
 
+        this.IsEnabled = true;
         loading.IsVisible = false;
-        EnableControls();
     }
 
     private async void OnDecryptData(object sender, EventArgs e)
     {
+        this.IsEnabled = false;
+
         var frame = (Frame)sender;
-        await DisableControls(frame);
+        await ButtonAnimation(frame);
 
         if (CoreData.Count == 0)
         {
             await DisplayAlert("Error", "La Lista esta Vacía.", "Ok");
-            EnableControls();
+            this.IsEnabled = true;
             return;
         }
 
@@ -47,7 +54,7 @@ public partial class CorePage : ContentPage
             if (!IsBase64String(CoreData[i].Data01))
             {
                 await DisplayAlert("Error", "La Lista ya está Descifrado.", "Ok");
-                EnableControls();
+                this.IsEnabled = true;
                 return;
             }
         }
@@ -58,29 +65,29 @@ public partial class CorePage : ContentPage
 
         if (string.IsNullOrWhiteSpace(password))
         {
-            EnableControls();
+            this.IsEnabled = true;
             return;
         }
 
         loading.IsVisible = true;
         FilteredCoreData.Clear();
 
-        var result = await _apiCoreService.Login(password);
+        var resultApi = await _apiCoreService.Login(password);
 
-        if (!result.Success)
+        if (!resultApi.Success)
         {
-            await DisplayAlert($"{result.StatusCode}", $"{result.Message}", "Ok");
-            EnableControls();
+            await DisplayAlert($"{resultApi.StatusCode}", $"{resultApi.Message}", "Ok");
+            this.IsEnabled = true;
             return;
         }
 
-        if (!string.IsNullOrEmpty(result.Data?.IV))
+        if (!string.IsNullOrEmpty(resultApi.Data?.IV))
         {
             EncryptionService encryptionService = new EncryptionService();
 
             for (int i = 0; i < CoreData.Count; i++)
             {
-                CoreData[i] = encryptionService.DecryptData(CoreData[i], password, result.Data.IV);
+                CoreData[i] = encryptionService.DecryptData(CoreData[i], password, resultApi.Data.IV);
             }
 
             foreach (var coreData in CoreData.OrderBy(e => e.Data01))
@@ -89,43 +96,110 @@ public partial class CorePage : ContentPage
             }
         }
 
-        EnableControls();
+        this.IsEnabled = true;
+        loading.IsVisible = false;
     }
 
     private async void OnCreate(object sender, EventArgs e)
 	{
-        var frame = (Frame)sender;
-        await DisableControls(frame);
+        this.IsEnabled = false;
 
-        var page = new CoreFormPage(null);
+        var frame = (Frame)sender;
+        await ButtonAnimation(frame);
+
+        await SaveData(null);
+
+        this.IsEnabled = true;
+        loading.IsVisible = false;
+    }
+
+    private async void OnEdit(object sender, EventArgs e)
+    {
+        this.IsEnabled = false;
+        var button = sender as Button;
+
+        if (button?.BindingContext is CoreDTO coreDTO)
+        {
+            if (IsBase64String(coreDTO.Data01))
+            {
+                await DisplayAlert("Error", "El Item Debe Estar Descifrado.", "Ok");
+            } else
+            {
+                await SaveData(coreDTO);
+            }
+        }
+
+        loading.IsVisible = false;
+        this.IsEnabled = true;
+    }
+
+    private async void OnDelete(object sender, EventArgs e)
+    {
+        loading.IsVisible = true;
+
+        this.IsEnabled = false;
+        var button = sender as Button;
+
+        bool response = await DisplayAlert("Advertencia", "Estas Seguro de Eliminar Este Elemento?.", "SI", "NO");
+
+        if (button?.BindingContext is CoreDTO coreDTO && response)
+        {
+            var result = await _apiCoreService.Delete(coreDTO.Id);
+            FilteredCoreData.Remove(coreDTO);
+            CoreData.Remove(coreDTO);
+        }
+
+        loading.IsVisible = false;
+        this.IsEnabled = true;
+    }
+
+    private async Task SaveData(CoreDTO coreDTO)
+    {
+        var page = new CoreFormPage(coreDTO);
         await Navigation.PushAsync(page);
-        var (coreDTO, password) = await page.GetCompletionTask();
+        var (newCoreDTO, password) = await page.GetCompletionTask();
+
+        if (newCoreDTO == null || string.IsNullOrWhiteSpace(password))
+        {
+            return;
+        }
+
+        var resultApi = await _apiCoreService.Login(password);
+
+        if (!resultApi.Success)
+        {
+            await DisplayAlert($"Error {resultApi.StatusCode}", resultApi.Message, "Ok");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(resultApi.Data.IV))
+        {
+            return;
+        }
 
         loading.IsVisible = true;
 
-        if (coreDTO != null && !string.IsNullOrWhiteSpace(password))
+        EncryptionService encryptionService = new EncryptionService();
+        newCoreDTO = encryptionService.EncryptData(newCoreDTO, password, resultApi.Data.IV);
+
+        ResultApiDTO<CoreDTO> resultApiDTO;
+
+        if (newCoreDTO.Id == 0)
         {
-            await OnDownloadData();
+            resultApiDTO = await _apiCoreService.Create(newCoreDTO);
+        }
+        else
+        {
+            resultApiDTO = await _apiCoreService.Edit(newCoreDTO);
         }
 
-        EnableControls();
-    }
-
-    private async Task OnDownloadData()
-    {
-        SecretsCollectionView.ItemsSource = null;
-        CoreData.Clear();
-        FilteredCoreData.Clear();
-
-        var resultApi = await _apiCoreService.GetAll();
-
-        foreach (var coreData in resultApi.Data)
-        {
-            CoreData.Add(coreData);
-            FilteredCoreData.Add(coreData);
+        if (!resultApiDTO.Success) {
+            await DisplayAlert($"Error {resultApi.StatusCode}", resultApi.Message, "Ok");
+            return;
         }
 
-        SecretsCollectionView.ItemsSource = FilteredCoreData;
+        await DownloadData();
+        loading.IsVisible = false;
     }
 
     private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
@@ -152,25 +226,24 @@ public partial class CorePage : ContentPage
         }
     }
 
-    private async Task DisableControls(Frame frame)
+    private async Task DownloadData()
     {
-        BtnGetAll.IsEnabled = false;
-        BtnDecrypt.IsEnabled = false;
-        BtnCreate.IsEnabled = false;
-        TxtSearch.IsEnabled = false;
+        FilteredCoreData.Clear();
+        CoreData.Clear();
 
-        await frame.ScaleTo(0.90, 100);
-        await frame.ScaleTo(1, 100);
+        var resultApi = await _apiCoreService.GetAll();
+
+        foreach (var coreData in resultApi.Data)
+        {
+            CoreData.Add(coreData);
+            FilteredCoreData.Add(coreData);
+        }
     }
 
-    private void EnableControls()
+    private async Task ButtonAnimation(Frame frame)
     {
-        BtnGetAll.IsEnabled = true;
-        BtnDecrypt.IsEnabled = true;
-        BtnCreate.IsEnabled = true;
-        TxtSearch.IsEnabled = true;
-
-        loading.IsVisible = false;
+        await frame.ScaleTo(0.90, 100);
+        await frame.ScaleTo(1, 100);
     }
 
     private bool IsBase64String(string base64String)

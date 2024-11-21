@@ -6,7 +6,7 @@
 
     <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
         <!-- Aquí podrías poner una animación o un indicador de carga -->
-        <ActivityIndicator IsRunning="True"/>
+        <ActivityIndicator IsRunning="True" Color="{StaticResource Primary}"/>
     </StackLayout>
     
 </ContentPage>

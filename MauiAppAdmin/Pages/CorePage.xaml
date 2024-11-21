@@ -71,14 +71,14 @@
                         <Label Text="Lista de Secretos" FontSize="20" FontAttributes="Bold" Margin="0,0,0,10"/>
                         <ActivityIndicator x:Name="loading" IsRunning="True" IsVisible="False"/>
 
-                        <CollectionView x:Name="SecretsCollectionView" ItemsSource="{Binding CoreData}">
+                        <CollectionView x:Name="CoreCollectionView" ItemsSource="{Binding CoreData}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
 
                                     <toolkit:Expander Margin="0,0,0,5">
                                         <toolkit:Expander.Header>
                                             <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10">
-                                                <Label Text="{Binding Data01}" FontSize="18" FontAttributes="Bold" />
+                                                <Label Text="{Binding Data01}" FontSize="18" FontAttributes="Bold" TextColor="Black"/>
                                             </Frame>
                                         </toolkit:Expander.Header>
                                         <toolkit:Expander.Content>
@@ -101,8 +101,8 @@
                                                 </Grid>
 
                                                 <HorizontalStackLayout HorizontalOptions="Center" Spacing="10" Margin="5">
-                                                    <Button Text="Editar" HeightRequest="50" ImageSource="edit_512.png" />
-                                                    <Button Text="Eliminar" HeightRequest="50" ImageSource="delete_512.png" />
+                                                    <Button Clicked="OnEdit" CommandParameter="{Binding}" Text="Editar" HeightRequest="50" ImageSource="edit_512.png" BackgroundColor="{StaticResource EditColor}" />
+                                                    <Button Clicked="OnDelete" CommandParameter="{Binding}" Text="Eliminar" HeightRequest="50" ImageSource="delete_512.png" BackgroundColor="{StaticResource DangerColor}" />
                                                 </HorizontalStackLayout>
                                             </StackLayout>
                                         </toolkit:Expander.Content>

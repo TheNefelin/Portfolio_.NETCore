@@ -10,13 +10,13 @@
         <StackLayout Padding="10" Spacing="10">
             <Frame x:Name="ErrorFrame" IsVisible="False" HasShadow="True" HorizontalOptions="Fill">
                 <StackLayout HorizontalOptions="Center">
-                    <Label x:Name="ErrorLabel" TextColor="Red" FontSize="Small" />
+                    <Label x:Name="ErrorLabel" TextColor="{StaticResource DangerColor}" FontSize="Small" />
                 </StackLayout>
             </Frame>
 
             <Frame BackgroundColor="{StaticResource BackgroundColor80}">
                 <StackLayout>
-                    <Label Text="Nuevo Secreto" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Padding="10,5" />
+                    <Label x:Name="Title" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Padding="10,5" />
 
                     <HorizontalStackLayout Spacing="10" HorizontalOptions="End">
                         <Label Text="Id:"/>
