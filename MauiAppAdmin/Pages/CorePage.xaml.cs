@@ -9,6 +9,7 @@ public partial class CorePage : ContentPage
 {
     private readonly ApiCoreService _apiCoreService;
     public ObservableCollection<CoreDTO> CoreData { get; set; } = new();
+    private ObservableCollection<CoreDTO> BaseCoreData { get; set; } = new();
 
     public CorePage(ApiCoreService apiCoreService)
 	{
@@ -229,22 +230,26 @@ public partial class CorePage : ContentPage
 
     private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
     {
-        //var searchText = e.NewTextValue;
+        var searchText = e.NewTextValue;
 
-        //if (string.IsNullOrEmpty(searchText))
-        //{
-        //    UpdateFilteredCoreData();
-        //}
-        //else
-        //{
-        //    FilteredCoreData.Clear();
-        //    var filteredList = CoreData.Where(item => item.Data01.Contains(searchText, StringComparison.OrdinalIgnoreCase));
+        CoreData.Clear();
 
-        //    foreach (var item in filteredList)
-        //    {
-        //        FilteredCoreData.Add(item);
-        //    }
-        //}
+        if (string.IsNullOrEmpty(searchText))
+        {
+            foreach(var item in BaseCoreData)
+            {
+                CoreData.Add(item);
+            }
+        }
+        else
+        {
+            var filteredList = BaseCoreData.Where(item => item.Data01.Contains(searchText, StringComparison.OrdinalIgnoreCase));
+
+            foreach (var item in filteredList)
+            {
+                CoreData.Add(item);
+            }
+        }
     }
 
     private async Task DownloadData()
@@ -256,6 +261,7 @@ public partial class CorePage : ContentPage
         foreach (var coreData in resultApi.Data)
         {
             CoreData.Add(coreData);
+            BaseCoreData.Add(coreData);
         }
     }
 
