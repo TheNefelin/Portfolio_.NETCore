@@ -16,9 +16,7 @@ public partial class LoginPage : ContentPage
     }
 
     private async void OnLoginButtonClicked(object sender, EventArgs e)
-    {
-        MainContainer.Focus();
-        
+    {        
         await Navigation.PushModalAsync(new LoadingPage());
 
         string user = UserEntry.Text;
@@ -40,8 +38,14 @@ public partial class LoginPage : ContentPage
             return;
         }
 
-        Application.Current.MainPage = new AppShell();
+        App.Current.MainPage = new AppShell();
         await Navigation.PopModalAsync();
+    }
+
+    private async void OnRegisterButtonClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushModalAsync(new RegisterPage(_authService));
+
     }
 
     private async void OnAuthClicked(object sender, EventArgs e)

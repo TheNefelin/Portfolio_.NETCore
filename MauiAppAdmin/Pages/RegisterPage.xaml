@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiAppAdmin.Pages.RegisterPage"
+             Title="RegisterPage">
+
+    <Grid>
+        <Image Source="background.webp" Aspect="AspectFill"/>
+
+        <StackLayout Padding="30" Spacing="10">
+            <Frame x:Name="ErrorFrame" IsVisible="False" HasShadow="True" HorizontalOptions="Fill">
+                <StackLayout HorizontalOptions="Center">
+                    <Label x:Name="ErrorLabel" TextColor="{StaticResource DangerColor}" FontSize="Small" />
+                </StackLayout>
+            </Frame>
+
+            <Frame BackgroundColor="{StaticResource BackgroundColor80}">
+                <StackLayout>
+                    <Label Text="Registrarse" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Padding="10,10,10,30" />
+
+                    <Label Text="Correo:"/>
+                    <Entry x:Name="EmainEntry" Placeholder="Ingresa el Correo"/>
+
+                    <Label Text="Contraseña:"/>
+                    <Entry x:Name="Pass01Entry" IsPassword="True" Placeholder="Ingresa la Contraseña"/>
+
+                    <Label Text="Contraseña:"/>
+                    <Entry x:Name="Pass02Entry" IsPassword="True" Placeholder="Repita la contraseña"/>
+
+                    <Button Text="Registrarse" Clicked="OnSave" Margin="0,30,0,0"/>
+                    <Button Text="Volver" Clicked="GoBack" Margin="0,15,0,0"/>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </Grid>
+    
+</ContentPage>

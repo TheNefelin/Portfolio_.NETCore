@@ -25,7 +25,7 @@ public partial class CorePassPage : ContentPage
 
 		if (!pass01.Equals(pass02))
 		{
-            await DisplayAlert("Error", "DebesLas Contraseñas No Coincide.", "Ok");
+            await DisplayAlert("Error", "Las Contraseñas No Coincide.", "Ok");
             return;
         }
 
@@ -37,7 +37,7 @@ public partial class CorePassPage : ContentPage
             return;
         }
 
-		await DisplayAlert("msg", apiResult.Data.IV, "OK");
+		await DisplayAlert($"IV: {apiResult.Data.IV}", apiResult.Message, "OK");
 
 		await Navigation.PopAsync();
 	}

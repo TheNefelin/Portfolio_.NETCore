@@ -9,7 +9,7 @@
 
         <Frame Margin="10" BackgroundColor="{StaticResource BackgroundColor80}">
             <ScrollView Padding="10" VerticalScrollBarVisibility="Never" >
-                <StackLayout Spacing="5">
+                <StackLayout Spacing="15">
                     <StackLayout>
                         <Label Text="ID del Usuario:" FontSize="Medium" FontAttributes="Bold" VerticalOptions="Center"/>
                         <Label x:Name="UserIdLabel" VerticalOptions="Center"/>

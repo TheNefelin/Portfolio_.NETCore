@@ -20,7 +20,7 @@
                     <Entry x:Name="UserEntry" Placeholder="Usuario" />
                     <Entry x:Name="PasswordEntry" Placeholder="Contraseña" IsPassword="True" />
                     <Button Clicked="OnLoginButtonClicked" Text="Iniciar Sesións" Margin="0,15" />
-                    <Button Text="Registrarse" />
+                    <Button Clicked="OnRegisterButtonClicked" Text="Registrarse" />
                 </StackLayout>
             </Frame>
 

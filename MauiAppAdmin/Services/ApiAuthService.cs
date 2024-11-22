@@ -14,6 +14,53 @@ namespace MauiAppAdmin.Services
             _httpClient = httpClient;
         }
 
+        public async Task<ResultApiDTO<object>> Register(RegisterDTO registerDTO)
+        {
+            try
+            {
+                const string endpoint = "/api/auth/register";
+
+                if (!_httpClient.DefaultRequestHeaders.Contains("ApiKey"))
+                {
+                    _httpClient.DefaultRequestHeaders.Add("ApiKey", "ESMERILEMELO");
+                }
+
+                var json = JsonConvert.SerializeObject(registerDTO);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync(endpoint, content);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<ResponseApiDTO<LoggedinDTO>>(jsonResponse);
+
+                if (result == null)
+                {
+                    return new ResultApiDTO<object>()
+                    {
+                        Success = false,
+                        StatusCode = 500,
+                        Message = "Error en la solicitud."
+                    };
+                }
+
+                return new ResultApiDTO<object>
+                {
+                    Success = response.IsSuccessStatusCode,
+                    StatusCode = result.StatusCode,
+                    Message = result.Message,
+                    Data = result.Data,
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ResultApiDTO<object>()
+                {
+                    Success = false,
+                    StatusCode = 500,
+                    Message = ex.Message,
+                };
+            }
+        }
+
         public async Task<ResultApiDTO<LoggedinDTO>> Login(string email, string password)
         {
             try
@@ -22,9 +69,10 @@ namespace MauiAppAdmin.Services
 
                 LoginDTO loginDTO = new LoginDTO() { Email = email, Password = password };
 
-                // se agrega un elemento en la cabecera
                 if (!_httpClient.DefaultRequestHeaders.Contains("ApiKey"))
+                {
                     _httpClient.DefaultRequestHeaders.Add("ApiKey", "ESMERILEMELO");
+                }
 
                 var json = JsonConvert.SerializeObject(loginDTO);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");

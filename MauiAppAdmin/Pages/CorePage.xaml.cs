@@ -9,7 +9,6 @@ public partial class CorePage : ContentPage
 {
     private readonly ApiCoreService _apiCoreService;
     public ObservableCollection<CoreDTO> CoreData { get; set; } = new();
-    private ObservableCollection<CoreDTO> FilteredCoreData { get; set; } = new();
 
     public CorePage(ApiCoreService apiCoreService)
 	{
@@ -17,7 +16,7 @@ public partial class CorePage : ContentPage
 
         BindingContext = this;
         _apiCoreService = apiCoreService;
-        CoreCollectionView.ItemsSource = FilteredCoreData;
+        //CoreCollectionView.ItemsSource = CoreData;
     }
 
     private async void OnNewPass(object sender, EventArgs e)
@@ -40,7 +39,6 @@ public partial class CorePage : ContentPage
         var frame = (Frame)sender;
         await ButtonAnimation(frame);
 
-        FilteredCoreData.Clear();
         CoreData.Clear();
 
         this.IsEnabled = true;
@@ -97,7 +95,6 @@ public partial class CorePage : ContentPage
         }
 
         loading.IsVisible = true;
-        FilteredCoreData.Clear();
 
         var resultApi = await _apiCoreService.Login(password);
 
@@ -112,14 +109,16 @@ public partial class CorePage : ContentPage
         {
             EncryptionService encryptionService = new EncryptionService();
 
-            for (int i = 0; i < CoreData.Count; i++)
-            {
-                CoreData[i] = encryptionService.DecryptData(CoreData[i], password, resultApi.Data.IV);
-            }
+            var decryptedData = CoreData
+                .Select(data => encryptionService.DecryptData(data, password, resultApi.Data.IV))
+                .OrderBy(e => e.Data01)
+                .ToList();
 
-            foreach (var coreData in CoreData.OrderBy(e => e.Data01))
+            CoreData.Clear();
+
+            foreach (var item in decryptedData)
             {
-                FilteredCoreData.Add(coreData);
+                CoreData.Add(item);
             }
         }
 
@@ -172,7 +171,6 @@ public partial class CorePage : ContentPage
         if (button?.BindingContext is CoreDTO coreDTO && response)
         {
             var result = await _apiCoreService.Delete(coreDTO.Id);
-            FilteredCoreData.Remove(coreDTO);
             CoreData.Remove(coreDTO);
         }
 
@@ -231,31 +229,26 @@ public partial class CorePage : ContentPage
 
     private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
     {
-        var searchText = e.NewTextValue;
+        //var searchText = e.NewTextValue;
 
-        FilteredCoreData.Clear();
+        //if (string.IsNullOrEmpty(searchText))
+        //{
+        //    UpdateFilteredCoreData();
+        //}
+        //else
+        //{
+        //    FilteredCoreData.Clear();
+        //    var filteredList = CoreData.Where(item => item.Data01.Contains(searchText, StringComparison.OrdinalIgnoreCase));
 
-        if (string.IsNullOrEmpty(searchText))
-        {
-            foreach (var item in CoreData)
-            {
-                FilteredCoreData.Add(item); // Restauramos todos los elementos.
-            }
-        }
-        else
-        {
-            var filteredList = CoreData.Where(item => item.Data01.Contains(searchText, StringComparison.OrdinalIgnoreCase));
-
-            foreach (var item in filteredList)
-            {
-                FilteredCoreData.Add(item);
-            }
-        }
+        //    foreach (var item in filteredList)
+        //    {
+        //        FilteredCoreData.Add(item);
+        //    }
+        //}
     }
 
     private async Task DownloadData()
     {
-        FilteredCoreData.Clear();
         CoreData.Clear();
 
         var resultApi = await _apiCoreService.GetAll();
@@ -263,7 +256,6 @@ public partial class CorePage : ContentPage
         foreach (var coreData in resultApi.Data)
         {
             CoreData.Add(coreData);
-            FilteredCoreData.Add(coreData);
         }
     }
 
