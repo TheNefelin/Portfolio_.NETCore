@@ -145,7 +145,6 @@ public LoginPage(ApiAuthService authService)
 
 ### Multiple container
 ```
-<ScrollView />
 <StackLayout />
 <FlexLayout />
 <AbsoluteLayout />

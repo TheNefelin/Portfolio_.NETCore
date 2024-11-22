@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiAppAdmin.Pages.CorePassPage"
+             Title="Gestor de Contraseñas">
+
+    <Grid>
+        <Image Source="background.webp" Aspect="AspectFill"/>
+
+        <StackLayout Margin="10">
+            <Frame BackgroundColor="{StaticResource BackgroundColor80}">
+                <StackLayout>
+                    <Label Text="Crear Contraseña" Padding="0,0,0,30" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
+
+                    <Label Text="Ingresar Contraseña:"/>
+                    <Entry x:Name="Password01Entry" IsPassword="True" Placeholder="Nueva Contraseña" MaxLength="16" />
+
+                    <Label Text="Ingresar Contraseña:"/>
+                    <Entry x:Name="Password02Entry" IsPassword="True" Placeholder="Repetir Contraseña" MaxLength="16" />
+
+                    <Button x:Name="BtnClick" Clicked="OnSaveClicked" Text="Crear Contraseña" Margin="0,30,0,0"/>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </Grid>
+    
+</ContentPage>

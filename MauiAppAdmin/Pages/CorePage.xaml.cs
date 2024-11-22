@@ -20,6 +20,33 @@ public partial class CorePage : ContentPage
         CoreCollectionView.ItemsSource = FilteredCoreData;
     }
 
+    private async void OnNewPass(object sender, EventArgs e)
+    {
+        this.IsEnabled = false;
+
+        var frame = (Frame)sender;
+        await ButtonAnimation(frame);
+
+        var newPassword = new CorePassPage(_apiCoreService);
+        await Navigation.PushAsync(newPassword);
+
+        this.IsEnabled = true;
+    }
+
+    private async void OnClear(object sender, EventArgs e)
+    {
+        this.IsEnabled = false;
+
+        var frame = (Frame)sender;
+        await ButtonAnimation(frame);
+
+        FilteredCoreData.Clear();
+        CoreData.Clear();
+
+        this.IsEnabled = true;
+        loading.IsVisible = false;
+    }
+
     private async void OnGetAll(object sender, EventArgs e)
 	{
         this.IsEnabled = false;

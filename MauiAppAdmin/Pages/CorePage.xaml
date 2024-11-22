@@ -15,9 +15,19 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <ScrollView Grid.Row="0" Orientation="Horizontal" >
+            <ScrollView Grid.Row="0" Orientation="Horizontal" HorizontalScrollBarVisibility="Never" >
                 <StackLayout Orientation="Horizontal" Spacing="10" Margin="10,5">
-                    <Frame x:Name="BtnGetAll" Padding="0" WidthRequest="80" HeightRequest="80">
+                    <Frame x:Name="BtnClear" Padding="0" WidthRequest="80" HeightRequest="80" BorderColor="white" >
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnClear"/>
+                        </Frame.GestureRecognizers>
+                        <StackLayout VerticalOptions="CenterAndExpand">
+                            <Image Source="icon_shattered_512.png" WidthRequest="36" HorizontalOptions="Center" Aspect="AspectFit"/>
+                            <Label Text="Limpiar" HorizontalTextAlignment="Center" FontSize="Micro"/>
+                        </StackLayout>
+                    </Frame>
+                    
+                    <Frame x:Name="BtnGetAll" Padding="0" WidthRequest="80" HeightRequest="80" BorderColor="white" >
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnGetAll"/>
                         </Frame.GestureRecognizers>
@@ -27,17 +37,17 @@
                         </StackLayout>
                     </Frame>
 
-                    <Frame x:Name="BtnDecrypt" Padding="0" WidthRequest="80" HeightRequest="80">
+                    <Frame x:Name="BtnDecrypt" Padding="0" WidthRequest="80" HeightRequest="80" BorderColor="white" >
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnDecryptData"/>
                         </Frame.GestureRecognizers>
                         <StackLayout VerticalOptions="CenterAndExpand">
-                            <Image Source="icon_decrypted_512.png" WidthRequest="36" HorizontalOptions="Center" Aspect="AspectFit"/>
+                            <Image Source="icon_book_512.png" WidthRequest="36" HorizontalOptions="Center" Aspect="AspectFit"/>
                             <Label Text="Desencriptar" HorizontalTextAlignment="Center" FontSize="Micro"/>
                         </StackLayout>
                     </Frame>
 
-                    <Frame x:Name="BtnCreate" Padding="0" WidthRequest="80" HeightRequest="80">
+                    <Frame x:Name="BtnCreate" Padding="0" WidthRequest="80" HeightRequest="80" BorderColor="white" >
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnCreate"/>
                         </Frame.GestureRecognizers>
@@ -47,25 +57,24 @@
                         </StackLayout>
                     </Frame>
 
-                    <Frame x:Name="BtnPassword" Padding="0" WidthRequest="80" HeightRequest="80">
+                    <Frame x:Name="BtnPassword" Padding="0" WidthRequest="80" HeightRequest="80" BorderColor="white" >
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer />
+                            <TapGestureRecognizer Tapped="OnNewPass" />
                         </Frame.GestureRecognizers>
                         <StackLayout VerticalOptions="CenterAndExpand">
-                            <Image Source="icon_key_512.png" WidthRequest="36" HorizontalOptions="Center" Aspect="AspectFit"/>
+                            <Image Source="icon_bosskey_512.png" WidthRequest="36" HorizontalOptions="Center" Aspect="AspectFit"/>
                             <Label Text="Contraseña" HorizontalTextAlignment="Center" FontSize="Micro"/>
                         </StackLayout>
                     </Frame>
-
                 </StackLayout>
             </ScrollView>
 
-            <Frame Grid.Row="1" Margin="10,0" >
+            <Frame Grid.Row="1" Margin="10,0" BorderColor="white" >
                 <Entry x:Name="TxtSearch" TextChanged="OnSearchTextChanged" Placeholder="Buscar.." />
             </Frame>
 
             <Frame Grid.Row="2" Margin="10,5" BackgroundColor="{StaticResource BackgroundColor80}" >
-                <ScrollView Orientation="Vertical">
+                <ScrollView Orientation="Vertical" VerticalScrollBarVisibility="Never">
 
                     <StackLayout>
                         <Label Text="Lista de Secretos" FontSize="20" FontAttributes="Bold" Margin="0,0,0,10"/>

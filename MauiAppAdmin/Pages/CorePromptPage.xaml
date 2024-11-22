@@ -9,12 +9,12 @@
 
         <StackLayout Margin="10">
             <Frame BackgroundColor="{StaticResource BackgroundColor80}">
-                <StackLayout Padding="20" Spacing="10">
-                    <Label Text="Desencriptar Datos" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Padding="10" />
+                <StackLayout Padding="20,10" Spacing="10">
+                    <Label Text="Desencriptar Datos" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
                     <Label Text="Por favor, ingrese su contraseña:" FontSize="Medium" HorizontalOptions="Center" />
 
                     <Entry x:Name="PasswordEntry" IsPassword="True" Placeholder="Contraseña" MaxLength="16" />
-                    <Label x:Name="ErrorLabel" TextColor="Red" FontSize="Small" IsVisible="False" />
+                    <Label x:Name="ErrorLabel" TextColor="{StaticResource DangerColor}" FontSize="Small" IsVisible="False" />
 
                     <Button Text="Aceptar" Clicked="OnSubmitClicked" />
                     <Button Text="Cancelar" Clicked="OnCancelClicked" />

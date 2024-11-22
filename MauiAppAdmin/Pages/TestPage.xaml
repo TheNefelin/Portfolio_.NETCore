@@ -4,10 +4,6 @@
              x:Class="MauiAppAdmin.Pages.TestPage"
              Title="TestPage">
 
-    <StackLayout>
-        <Button Text="CLICK" Clicked="OnClick"/>
-        <Label x:Name="Txt1"/>
-        <Label x:Name="Txt2"/>
-    </StackLayout>
+    <Label Text="TEST"/>
 
 </ContentPage>
