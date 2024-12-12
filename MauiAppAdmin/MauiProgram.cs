@@ -22,7 +22,9 @@ namespace MauiAppAdmin
 
             // Dependencies Injection
             builder.Services.AddSingleton<IBiometric>(BiometricAuthenticationService.Default);
-            builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri("https://artema.bsite.net/") });
+            builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7005/") });
+            //builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri("https://artema.bsite.net/") });
+
             builder.Services.AddSingleton<ApiAuthService>();
             builder.Services.AddSingleton<ApiCoreService>();
 
